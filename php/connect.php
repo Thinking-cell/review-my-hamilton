@@ -12,6 +12,8 @@ try {
         "b28b6aeb91be3b",
         "bc56ac25"// for unix root= 000819787, password=dob
     );
+    $message = "Database Connection Established";
+    echo "<script type='text/javascript'>alert('$message');</script>";
 } catch (Exception $e)  {
     die("ERROR: Couldn't connect. {$e->getMessage()}");
 }
