@@ -224,10 +224,11 @@ cursor: pointer;
     
     }
     .wrapper .search_box{
-      width: 480px;
+      width: 500px;
       
     }
     .wrapper{
+      margin-left:200px;
       left:0;
     }
     #search-bar-button{
