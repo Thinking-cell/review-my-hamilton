@@ -6,10 +6,11 @@ let geocoder;
 let infoWindow;
 let markers = [];
 let centerLatLng = { lat: 43.2464343, lng: -79.8618984 };
-let selectedFilter = "All";
+let selectedFilter = "Top";
 let selectedFilter_SEARCH="All";
 let userLocation;
-let dataList=[];
+let currentReviews=[];
+const dataList=[];
 let currentObject;
 let searchResults=[];
 
@@ -43,69 +44,6 @@ function initMap() {
 
 
 
-    // testing
-    let test;
-    // test= data;
-    // it will return an array of one element
-    // test = data.filter((val, idx, array) => {
-    //     return val.name == "Beaches";
-    // });
-    // features has lat long data
-    // test=test[0].features;
-    // test=test.filter((val,idx,array)=>{
-    //     return val.properties.OBJECTID==1;
-    // });
-    // test=test[0];
-    // console.log(test);
-
-
-    // let temp=[];
-    // results=data;
-    // results.forEach((val, idx, array) => {
-    //     (val.features).forEach((feature)=>{
-    //         temp.push(feature.properties);
-    //     });
-    // });
-    // results=temp;
-    // console.log(results);
-
-    // test end
-
-    // test=[
-    //     {
-    //         "name":'name1',
-    //         "id":1
-    //     },
-    //     {
-    //         "name":'name2',
-    //         "id":2
-    //     },
-    //     {
-    //         "name":'name3',
-    //         "id":3
-    //     },
-    //     {
-    //         "name":'name4',
-            
-    //     },
-    // ]
-    // let val=4;
-    // console.log(test);
-    // test.forEach((value)=>{
-
-    //     value.categories='big'
-    //     if(value.id==undefined){
-    //         value.id=val;
-    //     }
-    // });
-
-
-
-    // console.log(test);
-
-
-
-
     // to mark on console whenever map size is changed by user
     google.maps.event.addListener(map, 'bounds_changed', function(evt) {
         console.log('Bounds changed!');
@@ -119,9 +57,6 @@ function initMap() {
     detectUserLocation();
     console.log(dataList);
     
-    
-
-
 
 
 }
@@ -189,108 +124,135 @@ function convertTojs(dataList){
 // function to set up various functionality! 
 function setupEvents() {
 
-    // search bar code block
-    $(".default_option").click(function(){
-        $(".dropdown ul").addClass("active");
-        
-      });
-      
-    $(".dropdown ul li").click(function(){
-        let content = $(this).html();
-        $(".default_option").html(content);
-        $(".dropdown ul").removeClass("active");
-    });
+    //focused page
+    $("#map-filters").focus();
 
-    // searching data and displaying on search bar
-    $("#search-bar-input").keyup(function(evt){
-        selectedFilter_SEARCH=$(".default_option>label>input").attr("value");
-        console.log(selectedFilter_SEARCH);
-        //console.log(selectedFilter_SEARCH);
-        let key_input=evt.target.value.toLowerCase();
-        let $container = $('.search-result-container');
-        $container.html("");
-        let resultCount=0;
-        let results=[];
-        dataList.forEach((object)=>{
-            if(selectedFilter_SEARCH!="All"){
-                if(selectedFilter_SEARCH==object.CATEGORY){
-                    if((object.NAME.toLowerCase()).includes(key_input)||(object.ADDRESS.toLowerCase()).includes(key_input)){
-                        results.push(object);
-                        resultCount++;
-                    }
-                }
-            }else{
-                if((object.NAME.toLowerCase()).includes(key_input)||(object.ADDRESS.toLowerCase()).includes(key_input)){
-                    results.push(object);
-                    resultCount++;
-                }
-            }
-        });
+    // review box component 
+    textAreaComponent();
+    
+    // getting paged table
+    getPagination('#table-id');
+    
+    // activating search bar feature
+    activateSearchbar(selectedFilter_SEARCH,dataList);
 
-        if(resultCount<=5){
-            results=results.slice(0,resultCount);
+
+
+
+
+
+    $(".user-review-post").click(function(){
+
+        let userEmail=$("#user_email_input").val();
+        let userReview=$("#user_review_input").val();
+        let userRating=$("#user_rating_input").val();
+        let $errorBox=$(".errorBox");
+        console.log(userEmail);
+        console.log(userRating);
+        console.log(userReview);
+        if(currentObject==undefined||currentObject===null){
+            alert("No Location Selected!")
         }else{
-            results=results.slice(0,5);
+            console.log("review init");
+            if(userEmail===""||userEmail===null){
+                $errorBox.html("Email cannot be Empty!")
+            }else if(!validateEmail(userEmail)){
+                $errorBox.html("Email syntax is incorrect!")
+            }else if(userRating===null||userRating===""||userRating===0){
+                alert("Page has been modified Illegaly, Now Refreshing!")
+                location.reload();
+            }else if(userReview===""||userReview===null){
+                $errorBox.html("Review cannot be Empty!")
+            }else{
+                $errorBox.html("");
+                let object=currentObject;
+                let url = "./php/updateReviews.php?location_name="+object.NAME+"&location_address="+object.ADDRESS+"&location_id="+object.OBJECTID+"&user_email="+userEmail+"&review="+userReview+"&rating="+userRating;
+                
+
+                console.log(url); // debug
+
+                // do the fetch
+                fetch(url, { credentials: 'include' })
+                    .then(response => response.json())
+                    .then(function(result){
+                        console.log(result);
+                        if(result===0){
+                           
+                            
+                            for(let i=0;i<currentReviews.length;i++){
+                                //console.log(result[i].OBJECTID);
+                                if(currentObject.OBJECTID==currentReviews[i].OBJECTID&&userEmail.toLowerCase()===currentReviews[i].user_email.toLowerCase()){
+                                    console.log(currentReviews[i]);
+                                    currentReviews[i].review=userReview;
+                                    
+                                }
+                            }
+                            let $container=$(".review-container");
+                            $container.html("");
+                            for(let i=0;i<currentReviews.length;i++){
+
+                                let $rowTemplate = $('.review-row-template');
+                                let $rowClone = $rowTemplate.clone();
+                                $rowClone.removeClass('d-none review-row-template');
+        
+                                console.log(currentReviews[i].user_email);
+                                console.log(currentReviews[i].review);
+                                $rowClone.find('.user_email').html(currentReviews[i].user_email);
+                                $rowClone.find('.user_review').html(currentReviews[i].review);
+                                $rowClone.find('.user_rating').html(currentReviews[i].rating);
+                            
+        
+                                $rowClone.appendTo($container);
+                                console.log("Updated")
+
+                                
+                            }
+                            
+                        }else if(result===1){
+
+                            currentReviews.push({
+                                "OBJECTID": currentObject.OBJECTID,
+                                "rating": userRating,
+                                "review": userReview,
+                                "user_email": userEmail
+                            });
+                            let $container=$(".review-container");
+                            $container.html("");
+                            for(let i=0;i<currentReviews.length;i++){
+
+                                let $rowTemplate = $('.review-row-template');
+                                let $rowClone = $rowTemplate.clone();
+                                $rowClone.removeClass('d-none review-row-template');
+        
+                                console.log(currentReviews[i].user_email);
+                                console.log(currentReviews[i].review);
+                                $rowClone.find('.user_email').html(currentReviews[i].user_email);
+                                $rowClone.find('.user_review').html(currentReviews[i].review);
+                                $rowClone.find('.user_rating').html(currentReviews[i].rating);
+                            
+        
+                                $rowClone.appendTo($container);
+                                console.log("Updated")
+
+                                
+                            }
+                            
+
+                        }else{
+                            alert("ERROR: NEGATIVE SERVER RESPONSE("+result+") \n Report: Server detected Illegal Values! \n Response: Reloading Now.")
+                            location.reload();
+                        }
+
+                        
+
+                    });
+
+            }
         }
-        console.log(results);
-
-        
-        
-        
-        results.forEach((result)=>{
-            let $rowTemplate = $('.row-template');
-            let $rowClone = $rowTemplate.clone();
-            $rowClone.removeClass('d-none row-template');
-
-            $rowClone.find('.name-result-label').html(result.NAME);
-           
-
-            $rowClone.appendTo($container);
 
 
-        });
-
-        searchResults=results;
-
-        if(key_input==""){
-            $container.html("");
-            searchResults=[];
-            
-        }
-
-
-
-
-        // clicking search result
-        $('.search-result').click(function(evt){
-            let name=$(this).text();
-            let resultObject;
-            name=name.toLowerCase();
-            name=name.trim();
-            searchResults.forEach((object)=>{
-                if(name===((object.NAME).toLowerCase()).trim()){
-                    resultObject=object;
-                }
-            });
-            console.log(name);
-            let lng=resultObject.LONGITUDE;
-            let lat = resultObject.LATITUDE;
-           
-            
-            currentObject=resultObject;
-            setMarker(resultObject);
-            console.log(currentObject);
-            
-
-
-        });
-        
-        
-      });
-
-
-      
-
+    });
+    
 
 
         
@@ -320,6 +282,9 @@ function setupEvents() {
         evt.preventDefault();
         return false;
     });
+
+
+    // get review
     $(document).on('click', '#infowindow-review-button', function(evt) {
         //  Capture the obj
         let objectId=$(evt.target).data('objid');
@@ -329,7 +294,13 @@ function setupEvents() {
                 currentObject=val;
             }
         });
+        currentReviews=[];
         console.log(currentObject);
+        getReviews(currentObject);
+
+        $([document.documentElement, document.body]).animate({
+            scrollTop: $(".review-container").offset().top
+        }, 1000);
         
 
        
@@ -425,6 +396,15 @@ function setupEvents() {
     
 }
 
+function validateEmail(email) {
+    let emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+    if( !emailReg.test( email ) ) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
 
 
 
@@ -485,8 +465,15 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 
 
 function setMarker(object){
-    let marker;
+
     clearMarkers();
+    generateMarker(object);
+    centerMap();
+}
+
+function generateMarker(object){
+    let marker;
+    
     let val=object;
     let latLng = { lat: val.LATITUDE, lng: val.LONGITUDE };
     let infoWindowContentUserLocation = `
@@ -497,7 +484,8 @@ function setMarker(object){
         <input type='hidden' id='infowindow-location-id' value=${val.OBJECTID}>
         <input type='hidden' id='infowindow-location-lng' value=${val.LONGITUDE}>
         <input type='hidden' id='infowindow-location-lat' value=${val.LATITUDE}>
-        <button type="button" class="btn btn-sm" id="infowindow-directions-button" data-lat="${val.LATITUDE}" data-lng="${val.LONGITUDE}">Directions</button>
+        <button type="button" class="btn btn-primary btn-sm " id="infowindow-directions-button" data-lat="${val.LATITUDE}" data-lng="${val.LONGITUDE}">Directions <i class="fas fa-car"></i></button>
+        <button type="button" class="btn btn-info btn-sm" id="infowindow-review-button" data-objid="${val.OBJECTID}">Reviews <i class="fas fa-heart"></i></button>
         
         
     `;
@@ -524,25 +512,101 @@ function setMarker(object){
 
     //pushing the marker into the map
     markers.push(marker);
-
-    centerMap();
 }
 
+
+function generateMarkers(results){
+    let marker;
+    //  Loop through each institution and add the marker for it
+    results.forEach((val, idx, array) => {
+       
+
+
+       generateMarker(val);
+        
+    });
+
+    centerMap();
+
+ 
+}
+
+
+// get reviews from AJAX call
+function getReviews(object){
+    let url = "./php/getReviews.php?objid="+object.OBJECTID;
+       
+
+    console.log(url); // debug
+
+    // do the fetch
+    fetch(url, { credentials: 'include' })
+        .then(response => response.json())
+        .then(function(result){
+            console.log(result);
+            let $container=$(".review-container");
+            $container.html("");
+            $(".review-location").html(object.NAME);
+
+            if(result.length===0){
+                console.log("no reviews")
+                let $rowTemplate = $('.review-row-template');
+                let $rowClone = $rowTemplate.clone();
+                $rowClone.removeClass('d-none review-row-template');
+
+                $rowClone.find('.user_review').html("<h3 style='text-align: left;'>It seems there are no Reviews for this place for now!</h3><p>Be the first to review this place, Give your Review! </p>");
+                $rowClone.find('.user_rating').html("No Ratings");
+                $rowClone.find('.user_email').html("Uh-Oh!");
+            
+
+                $rowClone.appendTo($container);
+                console.log("appended")
+
+            }else{
+                currentReviews=result;
+                console.log("loading reviews");
+                for(let i=0;i<result.length;i++){
+                    console.log(result[i].OBJECTID);
+                    if(object.OBJECTID==result[i].OBJECTID){
+                        console.log("authenication success");
+                        let $rowTemplate = $('.review-row-template');
+                        let $rowClone = $rowTemplate.clone();
+                        $rowClone.removeClass('d-none review-row-template');
+
+                        console.log(result[i].user_email);
+                        console.log(result[i].review);
+                        $rowClone.find('.user_email').html(result[i].user_email);
+                        $rowClone.find('.user_review').html(result[i].review);
+                        $rowClone.find('.user_rating').html(result[i].rating);
+                    
+
+                        $rowClone.appendTo($container);
+                        console.log("appended")
+                    }
+                }
+     
+
+            }
+           
+            
+        });
+
+}
 
 
 
 
 // seeting up all markers
 function setupMarkers() {
-    let marker;
+    
     let results;
-    let temp=[];
+    let isAJAX=false;
     let count=0;
     let BreakException = {};
     clearMarkers();
     // selecting each marker by category
     // data is a geojason data file so we have to extract features within each object
-    if(selectedFilter !== "All") {
+    if(selectedFilter !== "All"&&selectedFilter !=="Top") {
         //  If "All" isn't selected, then filter by CATEGORY
         //  https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
 
@@ -554,67 +618,63 @@ function setupMarkers() {
             
             
         });
+        console.log("CATEGORY SELECT ");
        
        
-    } else {
+    } else if(selectedFilter==="All") {
         //  Otherwise, show everything
         // combining all categories into one but including 10 places each to avoid overcrowding
-       
+        console.log("ALL HERE");
         results=dataList;
         
        
         
         
+    }else{
+       
+        console.log("AJAX call here and run");
+        let url = "./php/getPopular.php";
+       
+
+        console.log(url); // debug
+
+        // do the fetch
+        fetch(url, { credentials: 'include' })
+            .then(response => response.json())
+            .then(function(result){
+                console.log(result);
+                let results=[];
+               
+                for(let i = 0; i < result.length; i++){
+                    //console.log(result[i]+" "+i);
+                    dataList.forEach((obj)=>{
+                        if(parseInt(obj.OBJECTID)===parseInt(result[i])){
+                            results.push(obj);
+                            
+                            
+                            //console.log(obj)
+                        }
+                    });
+                }
+
+                generateMarkers(results);
+            });
+
+            isAJAX=true;
+        
+
+        
     }
 
     //console.log(results);
+    if(!isAJAX){
+        generateMarkers(results);
+    }
     
-    //  Loop through each institution and add the marker for it
-    results.forEach((val, idx, array) => {
-       
-
-
-        let latLng = { lat: val.LATITUDE, lng: val.LONGITUDE };
-        let infoWindowContentUserLocation = `
-            <h6>${val.NAME}</h6>
-            <p>${val.ADDRESS},</p>
-            <input type='hidden' id='infowindow-location-name' value=${val.NAME}>
-            <input type='hidden' id='infowindow-location-address' value=${val.ADDRESS}>
-            <input type='hidden' id='infowindow-location-id' value=${val.OBJECTID}>
-            <input type='hidden' id='infowindow-location-lng' value=${val.LONGITUDE}>
-            <input type='hidden' id='infowindow-location-lat' value=${val.LATITUDE}>
-            <button type="button" class="btn btn-sm" id="infowindow-directions-button" data-lat="${val.LATITUDE}" data-lng="${val.LONGITUDE}">Directions</button>
-            <button type="button" class="btn btn-sm" id="infowindow-review-button"  data-objid=${val.OBJECTID}>Get Reviews</button>
-            
-        `;
-        let infoWindowContentNoLocation = `
-            <h6>${val.NAME}</h6>
-            <p>...</p>
-        `;
-
-        // setting up markers
-
-
-        marker = new google.maps.Marker({
-            position: latLng,
-            map: map,
-            //icon: `icon-${val.CATEGORY}.png`,
-            title: val.NAME,
-        });
-
-        // setting infowindow associated with each marker
-        google.maps.event.addListener(marker, 'click', function () {
-            infoWindow.setContent(userLocation ? infoWindowContentUserLocation : infoWindowContentNoLocation);
-            infoWindow.open(map, this);
-        });
-
-        //pushing the marker into the map
-        markers.push(marker);
-        
-    });
-
-    centerMap();
 }
+
+
+
 
 
 
@@ -652,4 +712,6 @@ function clearDirections() {
 
     setupMarkers();
 }
-        
+      
+
+
