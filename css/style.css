@@ -219,7 +219,7 @@ cursor: pointer;
 
 @media only screen and (max-width: 768px) {
   .wrapper .search_box .search_field .fas{
-    left:15px;
+    right:15px;
     
     
     }
