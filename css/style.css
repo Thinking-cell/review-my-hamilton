@@ -166,6 +166,7 @@ display: none;
 box-shadow: 8px 8px 6px -10px #b3c6ff;
 }
 
+
 .wrapper .search_box .dropdown ul.active{
 display: block;
 }
@@ -216,6 +217,17 @@ color: #5078ef;
 cursor: pointer;
 }
 
+@media only screen and (max-width: 768px) {
+  .wrapper .search_box .search_field .fas{
+    left:15px;
+    
+    
+    }
+    .wrapper .search_box{
+      width: 480px;
+    }
+  
+}
 ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
 color: #9fa3b1;
 }
