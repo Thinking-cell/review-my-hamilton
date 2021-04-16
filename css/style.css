@@ -224,12 +224,15 @@ cursor: pointer;
     
     }
     .wrapper .search_box{
-      width: 500px;
+      width: 430px;
       
     }
     .wrapper{
-      margin-left:200px;
+      margin-left:220px;
       left:0;
+    }
+    .wrapper .search_box .search_field input{
+    	width:230px;
     }
     #search-bar-button{
       display: none;
