@@ -57,7 +57,7 @@ function initMap() {
     setupEvents();
     detectUserLocation();
     console.log(dataList);
-    $('#Spinner').css('display','none');
+    $('#loading-warning').css('display','none');
     
 
 
