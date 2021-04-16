@@ -225,7 +225,13 @@ cursor: pointer;
     }
     .wrapper .search_box{
       width: 480px;
+      
+    }
+    .wrapper{
       left:0;
+    }
+    #search-bar-button{
+      display: none;
     }
   
 }
