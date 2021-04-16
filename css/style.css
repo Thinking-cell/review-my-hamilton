@@ -225,6 +225,7 @@ cursor: pointer;
     }
     .wrapper .search_box{
       width: 480px;
+      left:0;
     }
   
 }
