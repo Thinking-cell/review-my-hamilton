@@ -665,7 +665,11 @@ body {
     margin-left: 25px;
   }
   @media only screen and (max-width: 768px) {
-    #main-heading{
-      font-size: 40px;
-    }
+  	#map-directions{
+  		display:block;
+
+  	}
+     #main-heading{
+  	  font-size:40px;
+  	}
   }
