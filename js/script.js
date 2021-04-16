@@ -68,7 +68,7 @@ function initMap() {
 
 //Convert Geojason to objects
 function convertTojs(dataList){
-
+    $('#loading-warning').css('display','block');
     let data_copy=data;
     let count=0;
     data_copy.forEach((value)=>{
@@ -116,6 +116,7 @@ function convertTojs(dataList){
         
 
     });
+    $('#Spinner').css('display','none');
     //console.log(dataList);
 }
 

@@ -75,6 +75,7 @@ include "php/connect.php";
     
     </header>
     
+    
     <div class="border-top border-info" style="border-width: 10px;" id="map"></div>
 
     <div id="hud">
@@ -198,7 +199,10 @@ include "php/connect.php";
     </div>
 
 
-
+    <div id="loading-warning">
+        <h4 id ="rd" class="d-flex justify-content-center  text-secondary">Loading Resources,<br><p style="text-align: center;">Please wait...<p></h4>
+        
+    </div>
 
     <div class="container my-4" style="background-color: #fff; border-radius:40px;">
 

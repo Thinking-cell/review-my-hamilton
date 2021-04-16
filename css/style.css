@@ -112,6 +112,14 @@ body {
     background: #e4eefa;
 }
 
+#loading-warning{
+    display:none;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+
 .wrapper{
     
 position: fixed;
