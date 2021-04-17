@@ -68,7 +68,7 @@ include "php/connect.php";
         <div class="c3b"></div>
     </div>
     </div>
-    <h1 id="main-heading" style="text-align: center; font-size:80px; margin-bottom:50px; color:#07537e;" class="strike">
+    <h1 id="main-heading" style="text-align: center; margin-bottom:50px; color:#07537e;" class="strike">
     <span class="strike__inner">
       Review<br>
       My Hamilton!
