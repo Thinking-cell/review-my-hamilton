@@ -591,6 +591,8 @@ function getReviews(object){
      
 
             }
+            // getting paged table
+             getPagination('#table-id');
            
             
         });
