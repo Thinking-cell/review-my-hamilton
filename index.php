@@ -6,11 +6,22 @@
 
 include "php/connect.php";
 
+
 ?>
 <!DOCTYPE html>
 
 
 <html>
+     <!--
+
+    ****************************************************************************
+    * I, Ranvir Singh, 000819787 certify that this material is my original work. 
+    * No other person's work has been used without due acknowledgement
+    ***************************************************************************
+
+
+    Asynchronous calls gave me headaches!!
+    -->
 
 <head>
     <title>Review my Hamilton!</title>
