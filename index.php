@@ -18,8 +18,7 @@ include "php/connect.php";
     * I, Ranvir Singh, 000819787 certify that this material is my original work. 
     * No other person's work has been used without due acknowledgement
 
-    This app uses professor provided google API key which has geocoding disabled and therefore direction finding and conversion of some geojason files may not be possible
-    however, everything else shold work just fine!
+  
     ***************************************************************************
 
 
@@ -39,7 +38,7 @@ include "php/connect.php";
 
     <!--Adding jquery functionality ,adding api key for google, adding json data, ????Bootstrap????customization-->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?AIzaSyDoH3oyYR5nzERWlIBQ4XLVZLtm63ZoIzc&callback=initMap&libraries=&v=weekly" defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?AIzaSyAZ7AE03g1ycTYuQoSqd_Tbd74fgIYLl_w&callback=initMap&libraries=&v=weekly" defer></script>
     
     <script src="js/data.js"></script>
     <script src="js/script.js"></script>
@@ -83,8 +82,7 @@ include "php/connect.php";
         <div class="c3b"></div>
     </div>
     </div>
-    <p>This app uses college provided google API key that has limited features, It has geocoding disabled and therefore direction finding and conversion of some geojason files may not be possible
-    however, everything else should work just fine!</p>
+  
     <h1 id="main-heading" style="text-align: center; margin-bottom:50px; color:#07537e;" class="strike">
     <span class="strike__inner">
       Review<br>
