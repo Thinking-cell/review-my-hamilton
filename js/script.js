@@ -313,7 +313,7 @@ function setupEvents() {
         getReviews(currentObject);
 
         $([document.documentElement, document.body]).animate({
-            scrollTop: $(".review-container").offset().top
+            scrollTop: $("#review-main").offset().top
         }, 1000);
         
 

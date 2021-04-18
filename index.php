@@ -369,6 +369,9 @@ include "php/connect.php";
             </div>
         </div>
     </div>
+
+
+    
     <footer>
     <svg viewBox="0 0 120 28">
     <defs> 
