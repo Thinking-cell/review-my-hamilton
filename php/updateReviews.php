@@ -7,12 +7,18 @@
         
 include "connect.php";
 
+try{
 $objId = filter_input(INPUT_GET, "location_id",FILTER_SANITIZE_NUMBER_INT);
 $rating = filter_input(INPUT_GET, "rating",FILTER_SANITIZE_NUMBER_INT);
 $locationName = filter_input(INPUT_GET, "location_name",FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $locationAddress = filter_input(INPUT_GET, "location_address",FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $userEmail = filter_input(INPUT_GET, "user_email",FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $review = filter_input(INPUT_GET, "review",FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+}catch(Exception $e){
+    echo json_encode($e->getMessage);
+    die();
+}
+
 // Prepare and execute the DB query
 $command = "SELECT location_id, user_email FROM reviews WHERE location_id=? ";
 $params = [$objId];
