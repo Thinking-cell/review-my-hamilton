@@ -127,15 +127,7 @@ function convertTojs(dataList){
 // function to set up various functionality! 
 function setupEvents() {
 
-    $(window).resize(function() { 
-        //call to your function and check the window width
-        if($(window).width() <= 760){ 
-            $reviews=$(".review-main");
-            $reviews.removeClass('container');
-            $reviews.addClass('fluid-container');
-        }
-
-    });
+    
 
 
     //focused page
@@ -149,6 +141,15 @@ function setupEvents() {
     
     // activating search bar feature
     activateSearchbar(selectedFilter_SEARCH,dataList);
+    $(window).resize(function() { 
+        //call to your function and check the window width
+        if($(window).width() <= 760){ 
+            $reviews=$(".review-main");
+            $reviews.removeClass('container');
+            $reviews.addClass('fluid-container');
+        }
+
+    });
 
 
 
