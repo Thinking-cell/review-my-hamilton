@@ -150,6 +150,11 @@ function setupEvents() {
             $reviews.removeClass('container');
             $reviews.addClass('fluid-container');
         }
+        if($(window).width() > 760){ 
+            $reviews=$('#review-main');
+            $reviews.removeClass('fluid-container');
+            $reviews.addClass('container');
+        }
 
     });
 
