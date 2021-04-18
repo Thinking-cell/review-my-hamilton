@@ -139,6 +139,8 @@ function setupEvents() {
     // getting paged table
     getPagination('#table-id');
     
+    
+    
     // activating search bar feature
     activateSearchbar(selectedFilter_SEARCH,dataList);
     $(window).resize(function() { 
