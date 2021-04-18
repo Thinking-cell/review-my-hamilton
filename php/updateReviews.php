@@ -15,7 +15,7 @@ $locationAddress = filter_input(INPUT_GET, "location_address",FILTER_SANITIZE_FU
 $userEmail = filter_input(INPUT_GET, "user_email",FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $review = filter_input(INPUT_GET, "review",FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 }catch(Exception $e){
-    echo json_encode($e->getMessage);
+    echo json_encode(-1);
     die();
 }
 
