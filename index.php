@@ -17,6 +17,9 @@ include "php/connect.php";
     ****************************************************************************
     * I, Ranvir Singh, 000819787 certify that this material is my original work. 
     * No other person's work has been used without due acknowledgement
+
+    This app uses professor provided google API key which has geocoding disabled and therefore direction finding and conversion of some geojason files may not be possible
+    however, everything else shold work just fine!
     ***************************************************************************
 
 
@@ -61,6 +64,8 @@ include "php/connect.php";
 <link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Oswald:wght@400;600&display=swap" rel="stylesheet">
 
     <header>
+    <p>This app uses college provided google API key that has limited features, It has geocoding disabled and therefore direction finding and conversion of some geojason files may not be possible
+    however, everything else shold work just fine!</p>
     <div class="wrapper-cloud">
     <div class="cloud1">
         <div class="c1l"></div>
