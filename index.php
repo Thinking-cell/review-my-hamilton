@@ -83,14 +83,15 @@ include "php/connect.php";
         <div class="c3b"></div>
     </div>
     </div>
+    <p>This app uses college provided google API key that has limited features, It has geocoding disabled and therefore direction finding and conversion of some geojason files may not be possible
+    however, everything else should work just fine!</p>
     <h1 id="main-heading" style="text-align: center; margin-bottom:50px; color:#07537e;" class="strike">
     <span class="strike__inner">
       Review<br>
       My Hamilton!
     </span>
   </h1>
-  <p>This app uses college provided google API key that has limited features, It has geocoding disabled and therefore direction finding and conversion of some geojason files may not be possible
-    however, everything else shold work just fine!</p>
+  
     </header>
     
     
