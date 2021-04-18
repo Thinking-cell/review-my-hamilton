@@ -123,8 +123,7 @@ function convertTojs(dataList){
     //console.log(dataList);
 }
 
-
-
+ 
 // function to set up various functionality! 
 function setupEvents() {
 
