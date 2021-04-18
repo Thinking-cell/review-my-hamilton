@@ -675,4 +675,7 @@ body {
      #main-heading{
   	  font-size:40px;
   	}
+    #map{
+  	  height:60%;
+  	}
   }
